@@ -33,7 +33,7 @@ jobs:
           command: |
             echo 'make hub key'
             mkdir keys
-            echo $HUB_SERVER_KEY_HEX | xxd -r -ps >> keys/hub.key
+            echo $SFDX_JWT_KEY | xxd -r -ps >> keys/hub.key
             openssl rsa -in keys/hub.key -check -noout
           ### Uncomment the following if performing deployments
           #- echo 'make deploy key'
