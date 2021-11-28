@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 general:
 # Uncomment the following to specify only a specific branch
@@ -44,7 +44,7 @@ jobs:
           name: Setup Org
           command: |
             echo 'Running tests'
-            sfdx force:auth:jwt:grant --clientid $SFDX_CONSUMER_KEY --jwtkeyfile keys/hub.key --username $SFDX_JWT_KEY --setdefaultdevhubusername -a hub
+            sfdx force:auth:jwt:grant --clientid $SFDX_CONSUMER_KEY --jwtkeyfile keys/hub.key --username $USERNAME --setdefaultdevhubusername -a hub
             sfdx force --help
             sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg
             sfdx force:org:display -u ciorg
