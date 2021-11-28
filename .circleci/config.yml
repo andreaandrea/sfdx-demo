@@ -46,19 +46,28 @@ jobs:
             echo 'Running tests'
             sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/hub.key --username $HUB_SFDC_USER --setdefaultdevhubusername -a hub
             sfdx force --help
-            sfdx force:org:create -s -f ~/ci_app/config/project-scratch-def.json -a circle_build_$CIRCLE_BUILD_NUM --wait 2
-            sfdx force:source:push -u circle_build_$CIRCLE_BUILD_NUM
+            sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg
+            sfdx force:org:display -u ciorg
+            sfdx force:source:push -u ciorg
+           
+          #-  sfdx force:org:create -s -f ~/ci_app/config/project-scratch-def.json -a circle_build_$CIRCLE_BUILD_NUM --wait 2
+          #- sfdx force:source:push -u circle_build_$CIRCLE_BUILD_NUM
+            
+            
       - run:
           name: Run Apex Tests
           command: |
             mkdir -p ~/junit
-            sfdx force:apex:test:run -c -d ~/junit -r junit --wait 5
+            sfdx force:apex:test:run -u ciorg -c -d ~/junit -r junit --wait 5
+      
+          #- sfdx force:apex:test:run -c -d ~/junit -r junit --wait 5
       - store_test_results:
           path: ~/junit
       - run:
           name: Delete Useless Scratch Org
           command: |
-            sfdx force:org:delete -u circle_build_$CIRCLE_BUILD_NUM -p
+            sfdx force:org:delete -u ciorg -p
+          #-  sfdx force:org:delete -u circle_build_$CIRCLE_BUILD_NUM -p
 
 ### Uncomment the following if performing deployments
 #deployment:
