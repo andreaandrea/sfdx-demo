@@ -39,12 +39,12 @@ jobs:
           #- echo 'make deploy key'
           #- echo $DEPLOY_SERVER_KEY_HEX | xxd -r -ps >> keys/deploy.key
           #- openssl rsa -in keys/deploy.key -check -noout
-          #- sfdx force:auth:jwt:grant --clientid $DEPLOY_CONSUMER_KEY --jwtkeyfile keys/deploy.key --username $DEPLOY_SFDC_USER -a deploy
+          #- sfdx force:auth:jwt:grant --clientid $DEPLOY_CONSUMER_KEY --jwtkeyfile keys/deploy.key --username $SFDX_JWT_KEY -a deploy
       - run:
           name: Setup Org
           command: |
             echo 'Running tests'
-            sfdx force:auth:jwt:grant --clientid $HUB_CONSUMER_KEY --jwtkeyfile keys/hub.key --username $HUB_SFDC_USER --setdefaultdevhubusername -a hub
+            sfdx force:auth:jwt:grant --clientid $SFDX_CONSUMER_KEY --jwtkeyfile keys/hub.key --username $HUB_SFDC_USER --setdefaultdevhubusername -a hub
             sfdx force --help
             sfdx force:org:create -v HubOrg -s -f config/project-scratch-def.json -a ciorg
             sfdx force:org:display -u ciorg
